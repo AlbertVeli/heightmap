@@ -1,9 +1,16 @@
+# All Rights Reversed - No Rights Reserved.
+#
+# Prickle-Prickle, the 9th day of Chaos in the YOLD 3179
+#
+# Albert Veli
+###
+
 eXe = hm
 OBJS = main.o map.o hmpng.o
 
 # Uncomment 2 lines below for macports
-#EXTRA_INCLUDE = -I /opt/local/include
-#EXTRA_LIBS = -L /opt/local/lib
+EXTRA_INCLUDE = -I /opt/local/include
+EXTRA_LIBS = -L /opt/local/lib
 
 # Uncomment line below to enable debug build
 #DEBUG = yes

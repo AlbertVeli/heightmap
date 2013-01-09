@@ -1,28 +1,30 @@
-Little program to parse raw heightmap data from the file srtm_ramp2.world.86400x43200.bin
+Little program to parse raw heightmap data from the file *srtm_ramp2.world.86400x43200.bin*
 and write the result to a png image. The raw srtm data file can be downloaded from here:
 http://visibleearth.nasa.gov/view.php?id=73934
 
-Usage: hm <latitude> <longitude> <latitude span> <longitude span> <png>
+Usage: hm &lt;latitude&gt; &lt;longitude&gt; &lt;latitude span&gt; &lt;longitude span&gt; &lt;png&gt;
 
 In the heightmap data each pixel represent average height
 (meters above sea) of area with a signed 16-bit integer.
 Dimension of the data is 86400x43200.
 
 Upper left pixel is:
-180° W, each x-pixel: (360/86400)°.
- 90° N, each y-pixel: (180/43200)°.
+> 180° W, each x-pixel: (360/86400)°.
+> 90° N, each y-pixel: (180/43200)°.
 These two values shold be the same (0.004166667° per pixel, the grid spacing).
 
 
-EXAMPLE
+## EXAMPLE
 
 Scandinavia is roughly at:
-x-direction: 3° E to 30° E
-y-direction: 74° N to 55° N
+> x-direction: 3° E to 30° E
+> y-direction: 74° N to 55° N
 
 To cut it out, run:
 
+<code>
 ./hm 74 3 19 27 out.png
+</code>
 
 Use for instance google maps to figure out longitude/latitude. Just zoom into an area
 and click on the share button (right of the print button) to copy the URL. It should look

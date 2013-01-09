@@ -4,6 +4,9 @@ http://visibleearth.nasa.gov/view.php?id=73934
 
 **Usage: hm &lt;latitude&gt; &lt;longitude&gt; &lt;latitude span&gt; &lt;longitude span&gt; &lt;png&gt;**
 
+> latitude (North/South) is in range 90 (° N) to -90 (° S).  
+> longitude (West/East) is in range -180 (° W) to 180 (° E).
+
 In the heightmap data each pixel represent average height
 (meters above sea) of area with a signed 16-bit integer.
 Dimension of the data is 86400x43200.

@@ -15,6 +15,7 @@ void free_map(void)
 {
    if (map) {
       munmap(map, mapstat.st_size);
+      map = NULL;
    }
 }
 

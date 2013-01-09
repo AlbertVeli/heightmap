@@ -36,7 +36,7 @@
 void usage(char **argv)
 {
    printf("usage: %s <latitude> <longitude> <latitude span> <longitude span> <png>\n", argv[0]);
-   printf("Use decimal fractions for latidue/longitude and spans.\n");
+   printf("Use decimal fractions for latitude/longitude/spans.\n");
    printf("latitude (North/South) is in range 90 (° N) to -90 (° S).\n");
    printf("longitude (West/East) is in range -180 (° W) to 180 (° E).\n\n");
    printf("EXAMPLE\n\nTo save Scandinavia (74° N, 3° E, span 19°, 27°)\nto heightmap out.png, run:\n\n");
@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
 
    printf("Saving the following latitude/longitude range to '%s':\n", outfile);
    printf("%Lf° %c, %Lf° %c, span %Lf°, %Lf°\n",
-          lat < 0 ? -lat : lat, lat < 0 ? 'N' : 'S',
+          lat < 0 ? -lat : lat, lat < 0 ? 'S' : 'N',
           lon < 0 ? -lon : lon, lon < 0 ? 'W' : 'E',
           span_h, span_w);
 

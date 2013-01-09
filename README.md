@@ -53,16 +53,16 @@ To get to the upper left corner, move one half span in each direction.
 
 The arguments to cut out the corresponding area with this program:
 
-* 59.611518 + 0.127302/2  ; up
-* 16.541634 - 0.42469/2   ; left
+* 59.611518 + 0.127302/2  ; up half height span
+* 16.541634 - 0.42469/2   ; left half width span
 * 0.127302                ; height span
 * 0.42469                 ; width span
 
 Remember that South and West are negative while North and East are positive degrees.
 
-
-All Rights Reversed - No Rights Reserved.
-
+<code>
+**All Rights Reversed - No Rights Reserved**
+</code>
 
 Prickle-Prickle, the 9th day of Chaos in the YOLD 3179
 

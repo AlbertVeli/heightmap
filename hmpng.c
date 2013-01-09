@@ -1,16 +1,11 @@
+/* All Rights Reversed - No Rights Reserved */
+
 #include "map.h"
 
 #include <stdint.h>
 #include <png.h>
 
-/* All Rights Reversed - No Rights Reserved.
- *
- * Prickle-Prickle, the 9th day of Chaos in the YOLD 3179
- *
- * Albert Veli
- */
-
-void save_hm_png(int x1, int x2, int y1, int y2, const char *outfile)
+void save_heightmap_png(int x1, int x2, int y1, int y2, const char *outfile)
 {
    FILE *fp = NULL;
    png_structp png_ptr = NULL;
@@ -41,18 +36,18 @@ void save_hm_png(int x1, int x2, int y1, int y2, const char *outfile)
 
    png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
    if (png_ptr == NULL) {
-      return ;
+      return;
    }
 
    info_ptr = png_create_info_struct(png_ptr);
    if (info_ptr == NULL) {
       png_destroy_write_struct(&png_ptr, NULL);
-      return ;
+      return;
    }
 
    if (setjmp(png_jmpbuf(png_ptr))) {
       png_destroy_write_struct(&png_ptr, &info_ptr);
-      return ;
+      return;
    }
 
    /* Specify 16-bit grayscale in png header */

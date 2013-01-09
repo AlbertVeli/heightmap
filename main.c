@@ -11,13 +11,7 @@
  * This can also be done with the script get_datafile.sh.
  * Then unpack the file with gunzip.
  *
- *
- * All Rights Reversed - No Rights Reserved.
- *
- *
- * Prickle-Prickle, the 9th day of Chaos in the YOLD 3179
- *
- * Albert Veli
+ * All Rights Reversed - No Rights Reserved
  */
 
 void usage(char **argv)
@@ -99,7 +93,9 @@ int main(int argc, char *argv[])
    y2 = ((90 - (lat - span_h)) / (long double)180) * MAPH;
    printf("%dx%d pixels\n", x2 - x1 + 1, y2 - y1 + 1);
 
-   save_hm_png(x1, x2, y1, y2, outfile);
+   save_heightmap_png(x1, x2, y1, y2, outfile);
+
+   save_texture_png(lat, lon, span_h, span_w, "texture.png");
 
    return 0;
 }

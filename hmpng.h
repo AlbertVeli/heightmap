@@ -1,14 +1,10 @@
 #ifndef __HMPNG_H
 #define __HMPNG_H
 
-/* All Rights Reversed - No Rights Reserved.
- *
- * Prickle-Prickle, the 9th day of Chaos in the YOLD 3179
- *
- * Albert Veli
- */
+/* All Rights Reversed - No Rights Reserved */
 
-extern void save_hm_png(int x1, int x2, int y1, int y2, const char *outfile);
+extern void save_heightmap_png(int x1, int x2, int y1, int y2, const char *outfile);
+extern void save_texture_png(long double lat, long double lon, long double span_h, long double span_w, const char *outfile);
 
 #endif /* __HMPNG_H */
 

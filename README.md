@@ -10,20 +10,21 @@ Dimension of the data is 86400x43200.
 
 Upper left pixel is:
 > 180° W, each x-pixel: (360/86400)°.  
-> 90° N, each y-pixel: (180/43200)°.  
-These two values shold be the same (0.004166667° per pixel, the grid spacing).
+> 90° N, each y-pixel: (180/43200)°.
+
+These two values shold be the same (0.004166667° per pixel, the grid spacing). Resolution is 30 arcseconds. NASA has higher resolutions available (1 and 3 arcseconds) for download, but those are divided into several parts. This one has the whole world in one big file (7GB unpacked).
 
 
 **EXAMPLE**
 
 Scandinavia is roughly at:
 > x-direction: 3° E to 30° E  
-> y-direction: 74° N to 55° N  
+> y-direction: 74° N to 55° N
 
 To cut it out, run:
 
 <code>
-./hm 74 3 19 27 out.png
+./hm 74 3 19 27 scandinavia.png
 </code>
 
 Use for instance google maps to figure out longitude/latitude. Just zoom into an area

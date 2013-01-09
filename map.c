@@ -1,5 +1,12 @@
 #include "map.h"
 
+/* All Rights Reversed - No Rights Reserved.
+ *
+ * Prickle-Prickle, the 9th day of Chaos in the YOLD 3179
+ *
+ * Albert Veli
+ */
+
 #include <sys/mman.h>
 #include <sys/types.h>
 #include <sys/stat.h>

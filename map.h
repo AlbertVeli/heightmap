@@ -1,6 +1,13 @@
 #ifndef __MAP_H
 #define __MAP_H
 
+/* All Rights Reversed - No Rights Reserved.
+ *
+ * Prickle-Prickle, the 9th day of Chaos in the YOLD 3179
+ *
+ * Albert Veli
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>

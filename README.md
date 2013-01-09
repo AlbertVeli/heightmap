@@ -1,11 +1,11 @@
 Proggy to read raw heightmap data from the file *srtm_ramp2.world.86400x43200.bin*
-and write the wanted area of the world a png 16-bit grayscale heightmap image.
+and write the wanted area of the world to a png 16-bit grayscale heightmap image.
 
 Before running the program first time, download the raw srtm data file:
 
 http://visibleearth.nasa.gov/view.php?id=73934
 
-The file can also be downloaded with the script get_datafile.sh. Then unpack the file with gunzip:
+The file can also be downloaded with the script *get_datafile.sh*. Then unpack the file with gunzip:
 
 <code>
 gunzip srtm_ramp2.world.86400x43200.bin.gz
@@ -43,7 +43,7 @@ To cut it out, run:
 
 Use for instance google maps to figure out longitude/latitude. Zoom into an area
 and click on the share button (right of the print button) to copy the URL.
-You should get an URL like this:
+You should get an URL like:
 
 https://maps.google.com/?ll=59.611518,16.541634&spn=0.127302,0.42469
 
@@ -59,3 +59,11 @@ The arguments to cut out the corresponding area with this program:
 * 0.42469                 ; width span
 
 Remember that South and West are negative while North and East are positive degrees.
+
+
+All Rights Reversed - No Rights Reserved.
+
+
+Prickle-Prickle, the 9th day of Chaos in the YOLD 3179
+
+Albert Veli

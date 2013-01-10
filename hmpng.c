@@ -5,6 +5,22 @@
 #include <stdint.h>
 #include <png.h>
 
+/* Both heightmap and png stores 16-bit
+ * values in big endian. But to process the
+ * data bytes has to be swapped on little
+ * endian machines.
+ */
+#define swap16(x) ((uint16_t)((x<<8)|(x>>8)))
+
+static bool is_little_endian(void)
+{
+  char *buf = "\x00\x01";
+  uint16_t *p = (uint16_t*)buf;
+
+  return *p == 0x100;
+}
+
+
 void save_heightmap_png(int x1, int x2, int y1, int y2, const char *outfile)
 {
    FILE *fp = NULL;
@@ -13,17 +29,20 @@ void save_heightmap_png(int x1, int x2, int y1, int y2, const char *outfile)
    size_t x, y, w, h, skip;
    png_bytepp row_pointers;
    png_bytep row;
-   int16_t color;
+   int16_t elevation, height;
    bool ret = false;
+   bool little_endian;
 
    /* Pointer to humongous (7GB) MAPW x MAPH 16-bit map data (see map.c) */
    int16_t *mapp = (int16_t *)map;
 
-   printf("%s: %dx%d ... ", outfile, x2 - x1 + 1, y2 - y1 + 1);
-   fflush(stdout);
+   little_endian = is_little_endian();
 
    w = x2 - x1 + 1;
    h = y2 - y1 + 1;
+
+   printf("%s: %dx%d ... ", outfile, (int)w, (int)h);
+   fflush(stdout);
 
    /* Advance mapp to first pixel */
    mapp += (uint64_t)x1 + (uint64_t)MAPW * (uint64_t)y1;
@@ -67,15 +86,24 @@ void save_heightmap_png(int x1, int x2, int y1, int y2, const char *outfile)
    for (y = 0; y < h; y++) {
       row = row_pointers[y];
       for (x = 0; x < w; x++) {
-         color = *mapp++;
-#if 1
-         /* Clamp to negative heights to 0 */
-         if (color < 0) {
-            color = 0;
+
+         /* Read 2 big endian source bytes */
+         elevation = *mapp++;
+
+         /* Clamp negative heights to 0 */
+         if (little_endian) {
+            /* Swap bytes if little endian */
+            height = swap16(elevation);
+         } else {
+            height = elevation;
          }
-#endif
-         *row++ = (png_byte)(color & 0xff);
-         *row++ = (png_byte)(color >> 8);
+         if (height < 0) {
+            elevation = 0;
+         }
+
+         /* Write 2 bytes to destination */
+         *row++ = (png_byte)(elevation & 0xff);
+         *row++ = (png_byte)(elevation >> 8);
       }
       mapp += skip;
    }

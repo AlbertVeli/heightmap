@@ -110,6 +110,8 @@ int main(int argc, char *argv[])
 
    save_heightmap_png(x1, x2, y1, y2, heightfile);
 
+   free_map();
+
    save_texture_png(lat, lon, span_h, span_w, texturefile);
 
    return 0;

@@ -28,31 +28,27 @@ Use decimal fractions for latitude/longitude/spans.
 
 **EXAMPLE**
 
-Scandinavia is roughly at:
+To generate images *scandinavia_heightmap.png* and *scandinavia_texture.png*
+for the Scandinavia area (74° N, 3° E, span 19°, 27°), run:
 
-> x-direction: 3° E to 30° E  
-> y-direction: 74° N to 55° N
+    ./hm 74 3 19 27 scandinavia
 
-To cut it out, run:
-
-    ./hm 74 3 19 27 scandinavia.png
-
-Use for instance google maps to figure out longitude/latitude. Zoom into an area
-and click on the share button (right of the print button) to copy the URL.
-You should get an URL like:
+Use a map, terrestrial globe, google maps or other web service to figure
+out latitudes/longitudes. In google maps, zoom into an area and
+copy the URL (click on the share button). It should look something like:
 
 https://maps.google.com/?ll=59.611518,16.541634&spn=0.127302,0.42469
 
-Here the center is at 59.611518° N, 16.541634° E and the
-height/width span of the map in degrees are 0.127302°, 0.42469°.
+Here the center is at *59.611518° N*, *16.541634°* E and the
+height/width span of the map in degrees are *0.127302°*, *0.42469°*.
 To get to the upper left corner, move one half span in each direction.
 
 The arguments to cut out the corresponding area with this program:
 
-* 59.611518 + 0.127302/2  ; up half height span
-* 16.541634 - 0.42469/2   ; left half width span
-* 0.127302                ; height span
-* 0.42469                 ; width span
+    59.611518 + 0.127302/2  ; up half height span
+    16.541634 - 0.42469/2   ; left half width span
+    0.127302                ; height span
+    0.42469                 ; width span
 
 Remember that South and West are negative while North and East are positive degrees.
 

@@ -94,6 +94,8 @@ int main(int argc, char *argv[])
     * and the texture datafile.
     */
    if (!map_map("srtm_ramp2.world.86400x43200.bin")) {
+      puts("run get_datafiles.sh to download gz-file");
+      puts("and unpack it with gunzip");
       return 1;
    }
 

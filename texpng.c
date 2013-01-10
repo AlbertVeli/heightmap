@@ -49,7 +49,6 @@ static bool read_texture_png(const char *filename)
    FILE *fp = NULL;
    char buf[PNG_BYTES_TO_CHECK];
    png_size_t rowbytes;
-   int number_of_passes;
    png_size_t y;
 
    if (!(fp = fopen(filename, "rb"))) {
@@ -99,7 +98,7 @@ static bool read_texture_png(const char *filename)
    printf("bytes per pixel = %d\n", bpp);
 
    /* Is this necessary? */
-   number_of_passes = png_set_interlace_handling(png_rptr);
+   png_set_interlace_handling(png_rptr);
    png_read_update_info(png_rptr, info_rptr);
 
    /* Allocate memory for pixel data */

@@ -15,7 +15,7 @@ After download is finished, unpack the file with gunzip:
 
 **USAGE**
 
-    **hm <latitude> <longitude> <latitude span> <longitude span> <basename>**
+    hm <latitude> <longitude> <latitude span> <longitude span> <basename>
 
 Use decimal fractions for latitude/longitude/spans.  
 
@@ -71,7 +71,7 @@ latitudes are roughly 500m per pixel through the whole range.
 
 **LICENSE**
 
-    **All Rights Reversed - No Rights Reserved**
+    ~~=) All Rights Reversed - No Rights Reserved (=~~
 
 Prickle-Prickle, the 9th day of Chaos in the YOLD 3179
 

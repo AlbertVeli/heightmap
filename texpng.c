@@ -93,10 +93,6 @@ static bool read_texture_png(const char *filename)
    width = png_get_image_width(png_rptr, info_rptr);
    height = png_get_image_height(png_rptr, info_rptr);
 
-   printf("bit_depth = %d\n", bit_depth);
-   printf("w x h = %ld x %ld\n", width, height);
-   printf("bytes per pixel = %d\n", bpp);
-
    /* Is this necessary? */
    png_set_interlace_handling(png_rptr);
    png_read_update_info(png_rptr, info_rptr);
@@ -140,11 +136,6 @@ bool save_texture_png(long double lat, long double lon, long double span_h, long
    png_size_t dest_w, dest_h, row_offset, y;
    png_bytep drow, srow;
 
-   printf("%s: %Lf° %c, %Lf° %c, span %Lf°, %Lf° -> %s\n", __FUNCTION__,
-          lat < 0 ? -lat : lat, lat < 0 ? 'S' : 'N',
-          lon < 0 ? -lon : lon, lon < 0 ? 'W' : 'E',
-          span_h, span_w, outfile);
-
    if (!read_texture_png(TEXFILE)) {
       goto out2;
    }
@@ -182,7 +173,9 @@ bool save_texture_png(long double lat, long double lon, long double span_h, long
    y2 = ((90 - (lat - span_h)) / (long double)180) * height;
    dest_w = x2 - x1 + 1;
    dest_h = y2 - y1 + 1;
-   printf("%dx%d pixels\n", (int)dest_w, (int)dest_h);
+
+   printf("%s: %dx%d ... ", outfile, (int)dest_w, (int)dest_h);
+   fflush(stdout);
 
    /* write header */
    png_set_IHDR(png_ptr, info_ptr, dest_w, dest_h,
@@ -205,12 +198,10 @@ bool save_texture_png(long double lat, long double lon, long double span_h, long
    png_write_end(png_ptr, NULL);
 
    ret = true;
-   printf("Success\n");
 
 out:
 
    /* Free mem alloced in read_texture_png */
-   printf("Cleaning up\n");
    clean_up_read_mem();
 
    /* Free write structs (row_pointers already freed) */
@@ -223,6 +214,12 @@ out:
    }
 
 out2:
+
+   if (ret) {
+      puts("ok");
+   } else {
+      puts("fail");
+   }
 
    return ret;
 }

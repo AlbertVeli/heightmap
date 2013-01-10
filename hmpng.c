@@ -14,14 +14,13 @@ void save_heightmap_png(int x1, int x2, int y1, int y2, const char *outfile)
    png_bytepp row_pointers;
    png_bytep row;
    int16_t color;
+   bool ret = false;
 
    /* Pointer to humongous (7GB) MAPW x MAPH 16-bit map data (see map.c) */
    int16_t *mapp = (int16_t *)map;
 
-   if (!(fp = fopen(outfile, "w"))) {
-      perror(outfile);
-      return;
-   }
+   printf("%s: %dx%d ... ", outfile, x2 - x1 + 1, y2 - y1 + 1);
+   fflush(stdout);
 
    w = x2 - x1 + 1;
    h = y2 - y1 + 1;
@@ -36,18 +35,18 @@ void save_heightmap_png(int x1, int x2, int y1, int y2, const char *outfile)
 
    png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
    if (png_ptr == NULL) {
-      return;
+      goto out;
    }
 
    info_ptr = png_create_info_struct(png_ptr);
    if (info_ptr == NULL) {
       png_destroy_write_struct(&png_ptr, NULL);
-      return;
+      goto out;
    }
 
    if (setjmp(png_jmpbuf(png_ptr))) {
       png_destroy_write_struct(&png_ptr, &info_ptr);
-      return;
+      goto out;
    }
 
    /* Specify 16-bit grayscale in png header */
@@ -82,9 +81,19 @@ void save_heightmap_png(int x1, int x2, int y1, int y2, const char *outfile)
    }
 
    /* Write image data to fp */
+
+   if (!(fp = fopen(outfile, "w"))) {
+      perror(outfile);
+      goto out2;
+   }
+
    png_init_io(png_ptr, fp);
    png_set_rows(png_ptr, info_ptr, row_pointers);
    png_write_png(png_ptr, info_ptr, PNG_TRANSFORM_IDENTITY, NULL);
+
+   ret = true;
+
+ out2:
 
    /* Cleanup. */
    for (y = 0; y < h; y++) {
@@ -93,7 +102,17 @@ void save_heightmap_png(int x1, int x2, int y1, int y2, const char *outfile)
    png_free(png_ptr, row_pointers);
    png_destroy_write_struct(&png_ptr, &info_ptr);
 
-   fclose(fp);
+   if (fp) {
+      fclose(fp);
+   }
+
+ out:
+
+   if (ret) {
+      puts("ok");
+   } else {
+      puts("fail");
+   }
 }
 
 

@@ -16,20 +16,29 @@
 
 void usage(char **argv)
 {
-   printf("usage: %s <latitude> <longitude> <latitude span> <longitude span> <png>\n", argv[0]);
-   printf("Use decimal fractions for latitude/longitude/spans.\n");
-   printf("latitude (North/South) is in range 90 (° N) to -90 (° S).\n");
-   printf("longitude (West/East) is in range -180 (° W) to 180 (° E).\n\n");
-   printf("EXAMPLE\n\nTo save Scandinavia (74° N, 3° E, span 19°, 27°)\nto heightmap out.png, run:\n\n");
-   printf("%s 74 3 19 27 out.png\n\n", argv[0]);
+   printf("usage: %s <latitude> <longitude> <latitude span> <longitude span> <basename>\n\n", argv[0]);
+   puts("Use decimal fractions for latitude/longitude/spans.");
+   puts("latitude (North/South) in range 90 (° N) to -90 (° S).");
+   puts("longitude (West/East) in range -180 (° W) to 180 (° E).\n");
+   puts("ARGUMENTS\n");
+   puts("latitude/longitude - upper left corner of the wanted area.");
+   puts("latitude/longitude span - height and width of wanted area in degrees.");
+   puts("basename - common beginning of the two filenames to save output to.\n");
+   puts("EXAMPLE\n");
+   puts("To generate images for Scandinavia area (74° N, 3° E, span 19°, 27°)");
+   puts("scandinavia_heightmap.png and scandinavia_texture.png, run:\n");
+   printf("%s 74 3 19 27 scandinavia\n\n", argv[0]);
 }
 
+#define FNAMESIZE 128
 
 int main(int argc, char *argv[])
 {
    long double lat, lon, span_w, span_h;
    int x1, x2, y1, y2;
-   char *outfile;
+   char *basename;
+   char heightfile[FNAMESIZE];
+   char texturefile[FNAMESIZE];
 
    /* parse parameters and check bounds */
    if (argc != 6) {
@@ -71,17 +80,24 @@ int main(int argc, char *argv[])
       return 1;
    }
 
-   outfile = argv[5];
+   basename = argv[5];
+   snprintf(heightfile, FNAMESIZE, "%s_heightmap.png", basename);
+   /* on some systems snprintf skips terminating 0 if truncated */
+   heightfile[FNAMESIZE - 1] = 0;
+   snprintf(texturefile, FNAMESIZE, "%s_texture.png", basename);
+   texturefile[FNAMESIZE - 1] = 0;
 
    /* This hughe height map can be downloaded from:
     * http://visibleearth.nasa.gov/view.php?id=73934
+    *
+    * You can run get_datafiles.sh to fetch it
+    * and the texture datafile.
     */
    if (!map_map("srtm_ramp2.world.86400x43200.bin")) {
       return 1;
    }
 
-   printf("Saving the following latitude/longitude range to '%s':\n", outfile);
-   printf("%Lf° %c, %Lf° %c, span %Lf°, %Lf°\n",
+   printf("%Lf° %c, %Lf° %c, span %Lf°, %Lf°\n\n",
           lat < 0 ? -lat : lat, lat < 0 ? 'S' : 'N',
           lon < 0 ? -lon : lon, lon < 0 ? 'W' : 'E',
           span_h, span_w);
@@ -91,11 +107,10 @@ int main(int argc, char *argv[])
    x2 = (((lon + span_w) + 180.0) / (long double)360) * MAPW;
    y1 = ((90 - lat) / (long double)180) * MAPH;
    y2 = ((90 - (lat - span_h)) / (long double)180) * MAPH;
-   printf("%dx%d pixels\n", x2 - x1 + 1, y2 - y1 + 1);
 
-   save_heightmap_png(x1, x2, y1, y2, outfile);
+   save_heightmap_png(x1, x2, y1, y2, heightfile);
 
-   save_texture_png(lat, lon, span_h, span_w, "texture.png");
+   save_texture_png(lat, lon, span_h, span_w, texturefile);
 
    return 0;
 }

@@ -1,45 +1,41 @@
 Proggy to read raw heightmap data from the file *srtm_ramp2.world.86400x43200.bin*
-and write the wanted area of the world to a png 16-bit grayscale heightmap image.
+and write the wanted area of the world to one 16-bit grayscale png heightmap image
+and one texture png image. The wanted area is specified in latitudes/longitudes.
 
-Before running the program first time, download the raw srtm data file:
+Before running the program first time, download the srtm elevation data file:
 
-http://visibleearth.nasa.gov/view.php?id=73934
+Webpage: http://visibleearth.nasa.gov/view.php?id=73934  
+Mirror: ftp://neo.sci.gsfc.nasa.gov/bluemarble/bmng/
 
-The file can also be downloaded with the script *get_datafile.sh*. Then unpack the file with gunzip:
+The file can also be downloaded with the script [get_datafiles.sh](get_datafiles.sh).
+After download is finished, unpack the file with gunzip:
 
-<code>
-gunzip srtm_ramp2.world.86400x43200.bin.gz
-</code>
+    gunzip srtm_ramp2.world.86400x43200.bin.gz
 
-**Usage: hm &lt;latitude&gt; &lt;longitude&gt; &lt;latitude span&gt; &lt;longitude span&gt; &lt;png&gt;**
 
-> *latitude* (North/South) is in range 90 (° N) to -90 (° S).  
-> *longitude* (West/East) is in range -180 (° W) to 180 (° E).  
-> *latitude span* is the height of the wanted area in degrees.  
-> *longitude span* is the width of the wanted area in degrees.
+**USAGE**
 
-In the heightmap data each pixel represent average height
-(meters above sea) of area with a signed 16-bit integer.
+    **hm <latitude> <longitude> <latitude span> <longitude span> <basename>**
 
-Dimension of the data is 86400x43200. Upper left pixel is at
-90° N, 180° W and bottom right is at is at 90° S, 180° E.
-Each pixel is thus 360/86400 = 180/43200 = 30 arcseconds.
-1 arcsecond = 1/3600:th of a degree.
+Use decimal fractions for latitude/longitude/spans.  
 
-NASA has higher resolutions available (1 and 3 arcseconds) for download, but those are divided into several parts and the wanted area may be divided between parts which complicates the program. This one has the whole world in one big file (7GB unpacked). The humongous size slows down reading of the source data, but it simplifies the program to only have one datafile to deal with.
+> *latitude* (North/South) - in range 90 (° N) to -90 (° S)  
+> *longitude* (West/East) - in range -180 (° W) to 180 (° E)  
+> *latitude span* - height of the wanted area in degrees  
+> *longitude span* - width of the wanted area in degrees  
+> *basename* - common beginning of the two filenames to save output to
 
 
 **EXAMPLE**
 
 Scandinavia is roughly at:
+
 > x-direction: 3° E to 30° E  
 > y-direction: 74° N to 55° N
 
 To cut it out, run:
 
-<code>
-./hm 74 3 19 27 scandinavia.png
-</code>
+    ./hm 74 3 19 27 scandinavia.png
 
 Use for instance google maps to figure out longitude/latitude. Zoom into an area
 and click on the share button (right of the print button) to copy the URL.
@@ -60,9 +56,22 @@ The arguments to cut out the corresponding area with this program:
 
 Remember that South and West are negative while North and East are positive degrees.
 
-<code>
-**All Rights Reversed - No Rights Reserved**
-</code>
+
+**DATAFILE**
+
+In the heightmap data each pixel represent average height
+(meters above sea) of area with a signed 16-bit integer (big endian).
+
+Dimension of the srtm data is 86400x43200. Upper left pixel is at
+90° N, 180° W and bottom right is at is at 90° S, 180° E.
+Each pixel is thus 360/86400 = 180/43200 = 15 arcseconds ~= 500m (at the equator).
+1 arcsecond = 1/3600:th of a degree. Longitudes are distorted towards the poles while
+latitudes are roughly 500m per pixel through the whole range.
+
+
+**LICENSE**
+
+    **All Rights Reversed - No Rights Reserved**
 
 Prickle-Prickle, the 9th day of Chaos in the YOLD 3179
 

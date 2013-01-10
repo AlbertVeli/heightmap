@@ -4,8 +4,8 @@ eXe = hm
 OBJS = main.o map.o hmpng.o texpng.o
 
 # Uncomment 2 lines below for macports
-#EXTRA_INCLUDE = -I /opt/local/include
-#EXTRA_LIBS = -L /opt/local/lib
+EXTRA_INCLUDE = -I /opt/local/include
+EXTRA_LIBS = -L /opt/local/lib
 
 # Uncomment line below to enable debug build
 #DEBUG = yes

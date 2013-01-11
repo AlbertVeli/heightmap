@@ -3,6 +3,11 @@
 eXe = hm
 OBJS = hmpng.o main.o map.o parseargs.o texpng.o
 
+# Extra program to merge two elevation datafiles
+merge_eXe = merge_topo_bathy
+merge_OBJS = merge_topo_bathy.o map.o
+merge_LIBS =
+
 # Uncomment 2 lines below for macports
 #EXTRA_INCLUDE = -I /opt/local/include
 #EXTRA_LIBS = -L /opt/local/lib
@@ -21,8 +26,13 @@ WFLAGS = -W -Wall -Werror
 CFLAGS = $(WFLAGS) $(EXTRA_INCLUDE) $(DBGFLAGS) -pipe
 LIBS = $(EXTRA_LIBS) -lpng
 
+# Default rule. Only build hm.
 $(eXe): $(OBJS)
 	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LIBS)
+
+# "make merge_topo_bathy" builds the extra program
+$(merge_eXe): $(merge_OBJS)
+	$(CC) $(LDFLAGS) -o $@ $(merge_OBJS) $(merge_LIBS)
 
 # Optional. Run sparse to statically analyze source code.
 #
@@ -61,4 +71,4 @@ sparse-clean:
 	make -C sparse clean
 
 clean:
-	rm -f $(eXe) $(OBJS) *~
+	rm -f $(eXe) $(OBJS) $(merge_eXe) $(merge_OBJS) *~

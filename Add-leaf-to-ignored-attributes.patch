@@ -1,0 +1,38 @@
+From b44a98068f55662d9ed82778b664e7f2c6b1c19e Mon Sep 17 00:00:00 2001
+From: Albert Veli <albert.veli@gmail.com>
+Date: Fri, 11 Jan 2013 08:19:31 +0100
+Subject: [PATCH] Add 'leaf' to ignored attributes.
+
+---
+ ident-list.h | 1 +
+ parse.c      | 2 ++
+ 2 files changed, 3 insertions(+)
+
+diff --git a/ident-list.h b/ident-list.h
+index b12d172..63819a5 100644
+--- a/ident-list.h
++++ b/ident-list.h
+@@ -88,6 +88,7 @@ IDENT(dllimport); IDENT(__dllimport__);
+ IDENT(dllexport); IDENT(__dllexport__);
+ IDENT(restrict); IDENT(__restrict);
+ IDENT(artificial); IDENT(__artificial__);
++IDENT(leaf); IDENT(__leaf__);
+ 
+ /* Preprocessor idents.  Direct use of __IDENT avoids mentioning the keyword
+  * itself by name, preventing these tokens from expanding when compiling
+diff --git a/parse.c b/parse.c
+index bd42180..a85b51f 100644
+--- a/parse.c
++++ b/parse.c
+@@ -519,6 +519,8 @@ const char *ignored_attributes[] = {
+ 	"__format_arg__",
+ 	"hot",
+ 	"__hot__",
++	"leaf",
++	"__leaf__",
+ 	"l1_text",
+ 	"__l1_text__",
+ 	"l1_data",
+-- 
+1.7.12.4
+

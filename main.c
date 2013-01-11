@@ -82,10 +82,7 @@ int main(int argc, char *argv[])
 
    basename = argv[5];
    snprintf(heightfile, FNAMESIZE, "%s_heightmap.png", basename);
-   /* on some systems snprintf skips terminating 0 if truncated */
-   heightfile[FNAMESIZE - 1] = 0;
    snprintf(texturefile, FNAMESIZE, "%s_texture.png", basename);
-   texturefile[FNAMESIZE - 1] = 0;
 
    /* This hughe height map can be downloaded from:
     * http://visibleearth.nasa.gov/view.php?id=73934

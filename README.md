@@ -1,14 +1,22 @@
-Proggy to read raw heightmap data from the file *srtm_ramp2.world.86400x43200.bin*
+Proggy to read heightmap data from the file *srtm_ramp2.world.86400x43200.bin*
 and write the wanted area of the world to one 16-bit grayscale png heightmap image
-and one texture png image. The wanted area is specified in latitudes/longitudes.
+and one texture rgb png image. The wanted area is specified in latitudes/longitudes.
 
-Before running the program first time, download the srtm elevation data file:
+**PREPARATION**
+
+Before running the program the first time, download the files:
+
+* srtm_ramp2.world.86400x43200.bin.gz
+* world.topo.bathy.200410.3x21600x10800.png
+
+from:
 
 Webpage: http://visibleearth.nasa.gov/view.php?id=73934  
 Mirror: ftp://neo.sci.gsfc.nasa.gov/bluemarble/bmng/
 
-The file can also be downloaded with the script [get_datafiles.sh](heightmap/blob/master/datafiles/get_datafiles.sh).
-After download is finished, unpack the file with gunzip:
+The script [get_datafiles.sh](heightmap/blob/master/datafiles/get_datafiles.sh)
+automatically downloads the files. After download is finished, unpack the
+heightmap file with gunzip:
 
     gunzip srtm_ramp2.world.86400x43200.bin.gz
 

@@ -22,10 +22,24 @@ BATHYMETRY_DATA='http://eoimages.gsfc.nasa.gov/images/imagerecords/73000/73963/g
 # October 2004
 TEXTURE_DATA='http://eoimages.gsfc.nasa.gov/images/imagerecords/73000/73826/world.topo.bathy.200410.3x21600x10800.png'
 
-wget -N $TOPOGRAPHY_DATA || exit 1
-#wget -N $BATHYMETRY_DATA || exit 1
-wget -N $TEXTURE_DATA || exit 1
+# Don't download if unzipped file already exists
+if ! test -f `basename $TOPOGRAPHY_DATA .gz`; then
+    wget -N $TOPOGRAPHY_DATA || exit 1
+    echo "World heightmap downloaded. Unpack with:"
+    echo ""
+    echo "gunzip `basename $TOPOGRAPHY_DATA`"
+else
+    echo "Already have `basename $TOPOGRAPHY_DATA .gz`"
+fi
 
-echo "World heightmap downloaded. Unpack with:"
-echo ""
-echo "gunzip `basename $TOPOGRAPHY_DATA`"
+#if ! test -f $BATHYMETRY_DATA; then
+#    wget -N $BATHYMETRY_DATA || exit 1
+#else
+#    echo "Already have `basename $BATHYMETRY_DATA`"
+#fi
+
+if ! test -f `basename $TEXTURE_DATA`; then
+    wget -N $TEXTURE_DATA || exit 1
+else
+    echo "Already have `basename $TEXTURE_DATA`"
+fi

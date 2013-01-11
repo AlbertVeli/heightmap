@@ -10,18 +10,31 @@
 
 
 /* Memory mapped data */
-char *map = NULL;
-static struct stat mapstat;
+char *map[2] = { NULL, NULL };
+static struct stat mapstat[2];
 
-void free_map(void)
+void free_map(int index)
 {
-   if (map) {
-      munmap(map, mapstat.st_size);
-      map = NULL;
+   if (index != 0 && index != 1) {
+      puts("index must be 0 or 1");
+   } else {
+      if (map[index]) {
+         munmap(map[index], mapstat[index].st_size);
+         map[index] = NULL;
+      }
    }
 }
 
-bool map_map(const char *filename)
+void free_maps(void)
+{
+   free_map(0);
+   free_map(1);
+}
+
+/* map[index] = mmap(filename)
+ * index must be 0 or 1
+ */
+bool map_map(const char *filename, int index)
 {
    bool ret = false;
    int fd = open(filename, O_RDONLY);
@@ -31,19 +44,24 @@ bool map_map(const char *filename)
       goto out;
    }
 
-   if (fstat(fd, &mapstat) < 0) {
+   if (fstat(fd, &mapstat[index]) < 0) {
       perror(filename);
       goto out2;
    }
 
-   map = mmap(NULL, mapstat.st_size, PROT_READ, MAP_SHARED, fd, 0);
-   if (map == MAP_FAILED) {
+   if (index != 0 && index != 1) {
+      puts("index must be 0 or 1");
+      goto out2;
+   }
+
+   map[index] = mmap(NULL, mapstat[index].st_size, PROT_READ, MAP_SHARED, fd, 0);
+   if (map[index] == MAP_FAILED) {
       perror(filename);
       goto out2;
    }
 
    /* Free map automatically when program exits */
-   atexit(free_map);
+   atexit(free_maps);
    ret = true;
 
  out2:

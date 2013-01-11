@@ -7,21 +7,20 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-/* Memory mapped data of heightmap */
-extern char *map;
+/* Memory mapped data of heightmap/bathymetry */
+extern char *map[2];
 
-/* These defines are valid for the biggest heightmap here:
- * http://visibleearth.nasa.gov/view.php?id=73934
- * Change the values if a different heightmap is used.
- */
-#define MAPW 86400
-#define MAPH 43200
-#define XDPP (360/(long double)MAPW)
-/* YDPP should be same as XDPP if map is correctly mapped */
-#define YDPP (180/(long double)MAPH)
+/* srtm_ramp2.world.86400x43200.bin */
+#define S_MAPW 86400
+#define S_MAPH 43200
 
-extern bool map_map(const char *filename);
-extern void free_map(void);
+/* gebco_bathy.21601x10801.bin */
+#define B_MAPW 21601
+#define B_MAPH 10801
+
+extern bool map_map(const char *filename, int index);
+extern void free_map(int index);
+extern void free_maps(void);
 
 #endif /* __MAP_H */
 

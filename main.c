@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
     * You can run get_datafiles.sh to fetch it
     * and the texture datafile.
     */
-   if (!map_map("datafiles/srtm_ramp2.world.86400x43200.bin")) {
+   if (!map_map("datafiles/srtm_ramp2.world.86400x43200.bin", 0)) {
       puts("run get_datafiles.sh to download gz-file");
       puts("and unpack it with gunzip");
       return 1;
@@ -105,14 +105,14 @@ int main(int argc, char *argv[])
           span_h, span_w);
 
    /* Map longitude/latitude to pixel coordinates */
-   x1 = ((lon + 180.0) / (long double)360) * MAPW;
-   x2 = (((lon + span_w) + 180.0) / (long double)360) * MAPW;
-   y1 = ((90 - lat) / (long double)180) * MAPH;
-   y2 = ((90 - (lat - span_h)) / (long double)180) * MAPH;
+   x1 = ((lon + 180.0) / (long double)360) * S_MAPW;
+   x2 = (((lon + span_w) + 180.0) / (long double)360) * S_MAPW;
+   y1 = ((90 - lat) / (long double)180) * S_MAPH;
+   y2 = ((90 - (lat - span_h)) / (long double)180) * S_MAPH;
 
    save_heightmap_png(x1, x2, y1, y2, heightfile);
 
-   free_map();
+   free_map(0);
 
    save_texture_png(lat, lon, span_h, span_w, texturefile);
 

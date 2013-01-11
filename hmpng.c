@@ -18,8 +18,8 @@ bool save_heightmap_png(int x1, int x2, int y1, int y2, const char *outfile)
    int16_t elevation, height;
    bool ret = false;
 
-   /* Pointer to humongous (7GB) MAPW x MAPH 16-bit map data (see map.c) */
-   int16_t *mapp = (int16_t *)map;
+   /* Pointer to humongous (7GB) S_MAPW x S_MAPH 16-bit map data (see map.c) */
+   int16_t *mapp = (int16_t *)map[0];
 
    w = x2 - x1 + 1;
    h = y2 - y1 + 1;
@@ -28,10 +28,10 @@ bool save_heightmap_png(int x1, int x2, int y1, int y2, const char *outfile)
    fflush(stdout);
 
    /* Advance mapp to first pixel */
-   mapp += (uint64_t)x1 + (uint64_t)MAPW * (uint64_t)y1;
+   mapp += (uint64_t)x1 + (uint64_t)S_MAPW * (uint64_t)y1;
 
    /* Skip this many int16_t:s to get to next line */
-   skip = MAPW - w;
+   skip = S_MAPW - w;
 
    /* libpng stuff below */
 

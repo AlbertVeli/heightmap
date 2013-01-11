@@ -1,7 +1,7 @@
 # All Rights Reversed - No Rights Reserved
 
 eXe = hm
-OBJS = main.o map.o hmpng.o texpng.o
+OBJS = hmpng.o main.o map.o parseargs.o texpng.o
 
 # Uncomment 2 lines below for macports
 #EXTRA_INCLUDE = -I /opt/local/include
@@ -50,10 +50,12 @@ SPARSE_WARNINGS := -Wcast-to-as -Wdefault-bitfield-sign -Wdo-while -Wparen-strin
 $(SPARSE):
 	make -C sparse
 
-.PHONY: clean sparse sparse-clean
+.PHONY: clean distclean sparse sparse-clean
 
 sparse: $(SPARSE)
 	$(SPARSE) $(SPARSE_WARNINGS) $(CFLAGS) *.c
+
+distclean: clean sparse-clean
 
 sparse-clean:
 	make -C sparse clean

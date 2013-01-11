@@ -23,7 +23,7 @@ heightmap file with gunzip:
 
 **USAGE**
 
-    hm <latitude> <longitude> <latitude span> <longitude span> <basename>
+    hm [OPTIONS] <latitude> <longitude> <latitude span> <longitude span> <basename>
 
 Use decimal fractions for latitude/longitude/spans.  
 
@@ -32,6 +32,13 @@ Use decimal fractions for latitude/longitude/spans.
 > *latitude span* - height of the wanted area in degrees  
 > *longitude span* - width of the wanted area in degrees  
 > *basename* - common beginning of the two filenames to save output to
+
+
+**OPTIONS**
+
+    -h <FILE> - Datafile for heightmap instead of default
+    -t <FILE> - Datafile for texture instead of default
+    -v        - Verbose output
 
 
 **EXAMPLE**

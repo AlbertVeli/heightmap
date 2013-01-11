@@ -7,7 +7,7 @@ Before running the program first time, download the srtm elevation data file:
 Webpage: http://visibleearth.nasa.gov/view.php?id=73934  
 Mirror: ftp://neo.sci.gsfc.nasa.gov/bluemarble/bmng/
 
-The file can also be downloaded with the script [get_datafiles.sh](heightmap/blob/master/get_datafiles.sh).
+The file can also be downloaded with the script [get_datafiles.sh](heightmap/blob/master/datafiles/get_datafiles.sh).
 After download is finished, unpack the file with gunzip:
 
     gunzip srtm_ramp2.world.86400x43200.bin.gz

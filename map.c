@@ -36,7 +36,7 @@ bool map_map(const char *filename)
       goto out2;
    }
 
-   map = mmap(0, mapstat.st_size, PROT_READ, MAP_SHARED, fd, 0);
+   map = mmap(NULL, mapstat.st_size, PROT_READ, MAP_SHARED, fd, 0);
    if (map == MAP_FAILED) {
       perror(filename);
       goto out2;

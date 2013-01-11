@@ -1,12 +1,13 @@
 /* All Rights Reversed - No Rights Reserved */
 
 #include "map.h"
+#include "hmpng.h"
 
 #include <stdint.h>
 #include <png.h>
 #include <arpa/inet.h> /* ntohs */
 
-void save_heightmap_png(int x1, int x2, int y1, int y2, const char *outfile)
+bool save_heightmap_png(int x1, int x2, int y1, int y2, const char *outfile)
 {
    FILE *fp = NULL;
    png_structp png_ptr = NULL;
@@ -118,6 +119,8 @@ void save_heightmap_png(int x1, int x2, int y1, int y2, const char *outfile)
    } else {
       puts("fail");
    }
+
+   return ret;
 }
 
 

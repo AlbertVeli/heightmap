@@ -14,7 +14,7 @@
  * All Rights Reversed - No Rights Reserved
  */
 
-void usage(char **argv)
+static void usage(char **argv)
 {
    printf("usage: %s <latitude> <longitude> <latitude span> <longitude span> <basename>\n\n", argv[0]);
    puts("Use decimal fractions for latitude/longitude/spans.");

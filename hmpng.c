@@ -4,22 +4,7 @@
 
 #include <stdint.h>
 #include <png.h>
-
-/* Both heightmap and png stores 16-bit
- * values in big endian. But to process the
- * data bytes has to be swapped on little
- * endian machines.
- */
-#define swap16(x) ((uint16_t)((x<<8)|(x>>8)))
-
-static bool is_little_endian(void)
-{
-  char *buf = "\x00\x01";
-  uint16_t *p = (uint16_t*)buf;
-
-  return *p == 0x100;
-}
-
+#include <arpa/inet.h> /* ntohs */
 
 void save_heightmap_png(int x1, int x2, int y1, int y2, const char *outfile)
 {
@@ -31,12 +16,9 @@ void save_heightmap_png(int x1, int x2, int y1, int y2, const char *outfile)
    png_bytep row;
    int16_t elevation, height;
    bool ret = false;
-   bool little_endian;
 
    /* Pointer to humongous (7GB) MAPW x MAPH 16-bit map data (see map.c) */
    int16_t *mapp = (int16_t *)map;
-
-   little_endian = is_little_endian();
 
    w = x2 - x1 + 1;
    h = y2 - y1 + 1;
@@ -91,12 +73,7 @@ void save_heightmap_png(int x1, int x2, int y1, int y2, const char *outfile)
          elevation = *mapp++;
 
          /* Clamp negative heights to 0 */
-         if (little_endian) {
-            /* Swap bytes if little endian */
-            height = swap16(elevation);
-         } else {
-            height = elevation;
-         }
+         height = ntohs(elevation); /* swap bytes if little endian */
          if (height < 0) {
             elevation = 0;
          }

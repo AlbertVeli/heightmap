@@ -162,10 +162,6 @@ bool save_texture_png(long double lat, long double lon, long double span_h, long
 
    png_init_io(png_ptr, fp);
 
-   if (setjmp(png_jmpbuf(png_ptr))) {
-      goto out;
-   }
-
    /* Map longitude/latidude to pixel coordinates in source image */
    x1 = ((lon + 180.0) / (long double)360) * width;
    x2 = (((lon + span_w) + 180.0) / (long double)360) * width;

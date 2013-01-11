@@ -50,10 +50,13 @@ SPARSE_WARNINGS := -Wcast-to-as -Wdefault-bitfield-sign -Wdo-while -Wparen-strin
 $(SPARSE):
 	make -C sparse
 
-.PHONY: clean sparse
+.PHONY: clean sparse sparse-clean
 
 sparse: $(SPARSE)
 	$(SPARSE) $(SPARSE_WARNINGS) $(CFLAGS) *.c
+
+sparse-clean:
+	make -C sparse clean
 
 clean:
 	rm -f $(eXe) $(OBJS) *~

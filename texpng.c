@@ -10,7 +10,7 @@
  * It should have the same latitude/longitude borders as
  * the heightmap image. See README.md.
  */
-#define TEXFILE "world.topo.bathy.200410.3x21600x10800.png"
+#define TEXFILE "datafiles/world.topo.bathy.200410.3x21600x10800.png"
 
 #define PNG_BYTES_TO_CHECK 8
 

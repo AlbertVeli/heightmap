@@ -1,6 +1,7 @@
 srtm_ramp2.world.86400x43200.bin
 srtm_ramp2.world.86400x43200.bin.gz
-world.topo.bathy.200410.3x21600x10800.png
+world.topo.bathy.*.png
+gebco_bathy.*
 hm
 *.o
 *~

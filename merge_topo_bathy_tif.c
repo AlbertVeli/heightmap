@@ -128,7 +128,7 @@ bool merge_topo_bathy(void)
    int count;
    int16_t offset;
    uint32_t b_y, county;
-   char *color;
+   uint8_t *color;
 
    if (!(fp = fopen(OUTFILE, "w"))) {
       perror(OUTFILE);
@@ -166,7 +166,7 @@ bool merge_topo_bathy(void)
    for (y = 0; y < S_MAPH; y++) {
       count = 0;
 
-      color = scanline;
+      color = (uint8_t *)scanline;
       /* Map 0 - 255 to -8000 - 0:
        * (color - 0) / 255 = (b_elevation - -8000) / 8000
        */
@@ -177,7 +177,7 @@ bool merge_topo_bathy(void)
          s_elevation = ntohs(*sp++);
 
          /* Bathygraphy file seems to have 255 at land areas */
-         if (*color < 255) {
+         if (*color != 255) {
             elevation = b_elevation;
          } else {
             elevation = htons(s_elevation);

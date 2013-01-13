@@ -4,5 +4,6 @@ gebco_bathy.*
 merged_topo_bathy*
 hm
 merge_topo_bathy
+merge_topo_bathy_tif
 *.o
 *~

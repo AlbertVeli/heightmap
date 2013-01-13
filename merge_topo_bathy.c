@@ -18,10 +18,10 @@
 #define BATHYFILE "datafiles/gebco_bathy.21601x10801.bin"
 #define OUTFILE "datafiles/merged_topo_bathy.86400x43200.bin"
 
-int16_t min = 0;
-int16_t max = 0;
+static int16_t min = 0;
+static int16_t max = 0;
 
-void find_extremes(char *mp, int w, int h)
+static void find_extremes(char *mp, int w, int h)
 {
    int x, y;
    int16_t *p = (int16_t *)mp;
@@ -53,7 +53,7 @@ void find_extremes(char *mp, int w, int h)
    }
 }
 
-void merge_topo_bathy(void)
+static void merge_topo_bathy(void)
 {
    FILE *fp;
    int x, y;

@@ -101,16 +101,32 @@ void merge_topo_bathy(void)
 
          s_elevation = ntohs(*sp++);
 
+#if 0
          /* Take the biggest (positive or negative) */
          if (abs(s_elevation) > abs(b_elevation)) {
             elevation = htons(s_elevation);
          } else {
             elevation = htons(b_elevation);
          }
+#else
+         /* This seems to work better. Use land data
+          * if it is > 0, else use bathygraphy data.
+          */
+         if (s_elevation > 0) {
+            elevation = htons(s_elevation);
+         } else {
+            elevation = htons(b_elevation);
+         }
+#endif
 
          /* Write elevation (2 bytes) to destination file */
          elevation += offset;
-         fwrite(&elevation, 2, 1, fp);
+         if (fwrite(&elevation, 2, 1, fp) != 1) {
+            /* Error. Probably out of diskspace. */
+            fprintf(stderr, "Error writing to %s, is disk full?\n", OUTFILE);
+            fclose(fp);
+            return;
+         }
 
          /* Step up bp every fourth pixel (see dimensions) */
          if (count == 3) {
@@ -153,7 +169,7 @@ int main(void)
    }
 
    /* Change to #if 1 to search both bin-files for lowest point */
-#if 1
+#if 0
    printf("%s:\n", SRTMFILE);
    find_extremes(map[0], S_MAPW, S_MAPH);
    /* datafiles/srtm_ramp2.world.86400x43200.bin:

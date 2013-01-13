@@ -4,9 +4,8 @@ eXe = hm
 OBJS = hmpng.o main.o map.o parseargs.o texpng.o
 
 # Extra program to merge two elevation datafiles
-merge_eXe = merge_topo_bathy
-merge_OBJS = merge_topo_bathy.o map.o
-merge_LIBS =
+merge_eXe = merge_topo_bathy_tif
+merge_OBJS = merge_topo_bathy_tif.o map.o
 
 # Uncomment 2 lines below for macports
 #EXTRA_INCLUDE = -I /opt/local/include
@@ -26,11 +25,14 @@ WFLAGS = -W -Wall -Werror
 CFLAGS = $(WFLAGS) $(EXTRA_INCLUDE) $(DBGFLAGS) -pipe
 LIBS = $(EXTRA_LIBS) -lpng
 
+merge_LIBS = $(EXTRA_LIBS) -ltiff
+
+
 # Default rule. Only build hm.
 $(eXe): $(OBJS)
 	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LIBS)
 
-# "make merge_topo_bathy" builds the extra program
+# "make merge_topo_bathy_tif" builds the extra program
 $(merge_eXe): $(merge_OBJS)
 	$(CC) $(LDFLAGS) -o $@ $(merge_OBJS) $(merge_LIBS)
 

@@ -15,7 +15,7 @@ Webpage: http://visibleearth.nasa.gov/view.php?id=73934
 Mirror: ftp://neo.sci.gsfc.nasa.gov/bluemarble/bmng/
 
 The script [get_datafiles.sh](heightmap/blob/master/datafiles/get_datafiles.sh)
-automatically downloads the files. After download is finished, unpack the
+automatically downloads these files. After download is finished, unpack the
 heightmap file with gunzip:
 
     gunzip srtm_ramp2.world.86400x43200.bin.gz
@@ -68,16 +68,26 @@ The arguments to cut out the corresponding area with this program:
 Remember that South and West are negative while North and East are positive degrees.
 
 
-**DATAFILE**
+**ELEVATION DATAFILE**
 
 In the heightmap data each pixel represent average height
-(meters above sea) of area with a signed 16-bit integer (big endian).
+(meters above sea) of an area with a signed 16-bit
+integer (big endian).
 
 Dimension of the srtm data is 86400x43200. Upper left pixel is at
 90° N, 180° W and bottom right is at is at 90° S, 180° E.
-Each pixel is thus 360/86400 = 180/43200 = 15 arcseconds ~= 500m (at the equator).
-1 arcsecond = 1/3600:th of a degree. Longitudes are distorted towards the poles while
-latitudes are roughly 500m per pixel through the whole range.
+Each pixel is thus 360/86400° = 15 arcseconds ~= 500m (at the equator).
+1 arcsecond = 1/3600:th of a degree. Longitudes are distorted towards the
+poles while latitudes are roughly 500m per pixel through the whole range.
+
+
+**INSTRUCTION VIDEO**
+
+This video shows how to compile and use the program. It also shows how
+the generated heightmap and texture files can be rendered with
+[Blender](http://www.blender.org/).
+
+http://www.youtube.com/watch?v=1nKxmyudoLI
 
 
 **LICENSE**

@@ -31,8 +31,10 @@ uint32_t b_width, b_height;
 
 int open_bathy_tiff(void)
 {
+#if 0
    uint32_t bps, spp;
-   bool ret = false;
+#endif
+bool ret = false;
 
    /* This will raise a couple of warnings because
     * libtiff doesnt recognize the GeoTIFF tags.
@@ -58,6 +60,7 @@ int open_bathy_tiff(void)
       goto out;
    }
 
+#if 0
    TIFFGetField(tif, TIFFTAG_BITSPERSAMPLE, &bps);
    TIFFGetField(tif, TIFFTAG_SAMPLESPERPIXEL, &spp);
    if (bps * spp != 8) {
@@ -65,6 +68,7 @@ int open_bathy_tiff(void)
       printf("expected 8 bits per sample and 1 sample per pixel\n");
       goto out;
    }
+#endif
 
    if (TIFFScanlineSize(tif) > MAXSCANLINE) {
       printf("scanline too long\n");

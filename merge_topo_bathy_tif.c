@@ -19,14 +19,14 @@
 #define BATHYFILE "datafiles/gebco_bathy.43200x21600.0-8000_geo.tif"
 #define OUTFILE "datafiles/merged_topo_bathy.86400x43200.bin"
 
+/* Map byte in tif file (0 - 255) to -8000 - 0 */
+#define MAP_BYTE_MINUS8000_0(val) ((int)((val) * (8000 / (double)255.0)) - 8000)
+
 /* Reserve this many bytes for tif scanline */
 #define MAXSCANLINE 43200
 char scanline[MAXSCANLINE];
 TIFF *tif = NULL;
 uint32_t b_width, b_height;
-
-int16_t min = 0;
-int16_t max = 0;
 
 
 int open_bathy_tiff(void)
@@ -86,39 +86,6 @@ void close_bathy_tiff(void)
    TIFFClose(tif);
 }
 
-
-void find_extremes(char *mp, int w, int h)
-{
-   int x, y;
-   int16_t *p = (int16_t *)mp;
-   int16_t elevation, lmin, lmax;
-
-   lmin = 0;
-   lmax = 0;
-
-   for (y = 0; y < h; y++) {
-      for (x = 0; x < w; x++) {
-         elevation = ntohs(*p++);
-         if (elevation < lmin) {
-            lmin = elevation;
-         }
-         if (elevation > lmax) {
-            lmax = elevation;
-         }
-      }
-   }
-
-   printf(" - min: %d\n", lmin);
-   printf(" - max: %d\n", lmax);
-
-   if (lmin < min) {
-      min = lmin;
-   }
-   if (lmax > max) {
-      max = lmax;
-   }
-}
-
 bool merge_topo_bathy(void)
 {
    FILE *fp;
@@ -135,25 +102,10 @@ bool merge_topo_bathy(void)
       return false;
    }
 
-   /* Move every point up offset meters so lowest point of ocean floor
-    * becomes 0. If offset is 10577 then ocean level becomes 10577m and
-    * greatest elevation (8579m above sea) becomes 10577 + 8579 = 19156m.
-    * This is within the limits of a signed 16 bit integer, which can
-    * hold values up to 2^15 = 32768m.
-    *
-    * Set offset to 0 if you want to keep sea level at 0m.
+   /* We already know the lowest point is -8000 because
+    * we do the mapping from byte to -8000 - 0.
     */
-   if (min < 0) {
-      /* Set offset to lowest point found by find_extremes */
-      offset = abs(min);
-   } else {
-      /* default, 10577 = lowest point in gebco_bathy.21601x10801.bin
-       * use that as offset if find_extremes was skipped.
-       *
-       * Change this to 0 to keep sea level at 0m.
-       */
-      offset = 10577;
-   }
+   offset = 8000;
 
    printf("Merging files to %s, using offset %d meters\n", OUTFILE, offset);
 
@@ -167,24 +119,35 @@ bool merge_topo_bathy(void)
       count = 0;
 
       color = (uint8_t *)scanline;
-      /* Map 0 - 255 to -8000 - 0:
-       * (color - 0) / 255 = (b_elevation - -8000) / 8000
-       */
-      b_elevation = (int16_t)((*color) * (8000 / (double)255.0)) - 8000;
+      b_elevation = MAP_BYTE_MINUS8000_0(*color);
 
       for (x = 0; x < S_MAPW; x++) {
 
+         /* Convert from big endian to host endian */
          s_elevation = ntohs(*sp++);
 
-         /* Bathygraphy file seems to have 255 at land areas */
-         if (*color != 255) {
+         /* Bathygraphy file seems to have 255 at land areas
+          * which is mapped to 0 in b_elevation. Use that
+          * "land mask".
+          */
+         if (b_elevation < 0) {
+            /* b_elevation is already in host endian */
             elevation = b_elevation;
          } else {
-            elevation = htons(s_elevation);
+            /* Land */
+            if (s_elevation < 0) {
+               /* crop negative land areas to 0 */
+               elevation = 0;
+            } else {
+               /* positive land area */
+               elevation = s_elevation;
+            }
          }
 
+         /* Add offset and convert to big endian */
+         elevation = htons(elevation + offset);
+
          /* Write elevation (2 bytes) to destination file */
-         elevation += offset;
          if (fwrite(&elevation, 2, 1, fp) != 1) {
             /* Error. Probably out of diskspace. */
             fprintf(stderr, "Error writing to %s, is disk full?\n", OUTFILE);
@@ -195,7 +158,7 @@ bool merge_topo_bathy(void)
          /* Step up bathy every other pixel (exactly half dimension) */
          if (count == 1) {
             count = 0;
-            b_elevation = (int16_t)((*color++) * (8000 / (double)255.0)) - 8000;
+            b_elevation = MAP_BYTE_MINUS8000_0(*color++);
          } else {
             count++;
          }
@@ -231,22 +194,6 @@ int main(void)
       free_maps();
       return 1;
    }
-
-   /* Change to #if 1 to search both bin-files for lowest point */
-#if 0
-   printf("%s:\n", SRTMFILE);
-   find_extremes(map[0], S_MAPW, S_MAPH);
-   /* datafiles/srtm_ramp2.world.86400x43200.bin:
-    *  - min: -907
-    *  - max: 8579
-    */
-   printf("\n%s:\n", BATHYFILE);
-   find_extremes(map[1], B_MAPW, B_MAPH);
-   /* datafiles/gebco_bathy.21601x10801.bin:
-    *  - min: -10577
-    *  - max: 8430
-    */
-#endif
 
    if (merge_topo_bathy()) {
       puts("Done. To use the merged height data, use option -h to hm:\n");

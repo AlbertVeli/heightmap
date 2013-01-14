@@ -104,23 +104,23 @@ static void merge_topo_bathy(void)
 #if 0
          /* Take the biggest (positive or negative) */
          if (abs(s_elevation) > abs(b_elevation)) {
-            elevation = htons(s_elevation);
+            elevation = s_elevation;
          } else {
-            elevation = htons(b_elevation);
+            elevation = b_elevation;
          }
 #else
          /* This seems to work better. Use land data
           * if it is > 0, else use bathygraphy data.
           */
          if (s_elevation > 0) {
-            elevation = htons(s_elevation);
+            elevation = s_elevation;
          } else {
-            elevation = htons(b_elevation);
+            elevation = b_elevation;
          }
 #endif
 
          /* Write elevation (2 bytes) to destination file */
-         elevation += offset;
+         elevation = htons(elevation + offset);
          if (fwrite(&elevation, 2, 1, fp) != 1) {
             /* Error. Probably out of diskspace. */
             fprintf(stderr, "Error writing to %s, is disk full?\n", OUTFILE);

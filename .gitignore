@@ -1,6 +1,9 @@
-srtm_ramp2.world.86400x43200.bin*
+srtm_ramp2.world.86400x43200.bin
+srtm_ramp2.world.86400x43200.bin.gz
 world.topo.bathy.*.png
-gebco_bathy.*
+gebco_bathy.*.tif
+gebco_bathy.*.bin
+gebco_bathy.*.bin.gz
 merged_topo_bathy*
 hm
 merge_topo_bathy

@@ -27,6 +27,7 @@ LIBS = $(EXTRA_LIBS) -lpng
 
 merge_LIBS = $(EXTRA_LIBS) -ltiff
 
+all: $(eXe) $(merge_eXe)
 
 # Default rule. Only build hm.
 $(eXe): $(OBJS)

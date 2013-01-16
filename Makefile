@@ -27,7 +27,7 @@ LIBS = $(EXTRA_LIBS) -lpng
 
 merge_LIBS = $(EXTRA_LIBS) -ltiff
 
-all: $(eXe) $(merge_eXe)
+all: $(eXe) $(merge_eXe) download
 
 # Default rule. Only build hm.
 $(eXe): $(OBJS)
@@ -63,7 +63,11 @@ SPARSE_WARNINGS := -Wcast-to-as -Wdefault-bitfield-sign -Wdo-while -Wparen-strin
 $(SPARSE):
 	make -C sparse
 
-.PHONY: clean distclean sparse sparse-clean
+.PHONY: clean distclean sparse sparse-clean download
+
+download:
+	@echo "Downloading datafiles"
+	@make -C datafiles
 
 sparse: $(SPARSE)
 	$(SPARSE) $(SPARSE_WARNINGS) $(CFLAGS) *.c

@@ -82,9 +82,8 @@ check_md5 ()
 # Don't download if unzipped file already exists
 if ! test -f `basename $TOPOGRAPHY_DATA .gz`; then
     download_file $TOPOGRAPHY_DATA
-    echo "World heightmap downloaded. Unpack with:"
-    echo ""
-    echo "gunzip `basename $TOPOGRAPHY_DATA`"
+    echo "World heightmap downloaded. Unpacking."
+    gunzip `basename $TOPOGRAPHY_DATA`
 else
     echo "Already have `basename $TOPOGRAPHY_DATA .gz`"
 fi
@@ -105,9 +104,11 @@ else
 fi
 
 if ask "Got all files, check md5sums?"; then
-    check_md5 `basename $TOPOGRAPHY_DATA`
+    if test -f "`basename $TOPOGRAPHY_DATA`"; then
+        check_md5 `basename $TOPOGRAPHY_DATA`
+    fi
     check_md5 `basename $TEXTURE_DATA`
-    if test -f `basename $BATHYMETRY_DATA`; then
+    if test -f "`basename $BATHYMETRY_DATA`"; then
 	check_md5 `basename $BATHYMETRY_DATA`
     fi
 fi

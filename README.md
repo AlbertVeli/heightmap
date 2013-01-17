@@ -4,12 +4,14 @@ and one texture rgb png image. The wanted area is specified in latitudes/longitu
 
 **PREPARATION**
 
-Before running the program the first time, download the files:
+Before running the program the first time, the files:
 
 * srtm_ramp2.world.86400x43200.bin.gz
 * world.topo.bathy.200410.3x21600x10800.png
 
-from:
+needs to be downloaded into the datafiles/ directory.
+These files are part of the NASA Blue Marble Next Generation
+project and can be found at:
 
 Webpage: http://visibleearth.nasa.gov/view.php?id=73934  
 Mirror: ftp://neo.sci.gsfc.nasa.gov/bluemarble/bmng/
@@ -19,6 +21,41 @@ automatically downloads these files. After download is finished, unpack the
 heightmap file with gunzip:
 
     gunzip srtm_ramp2.world.86400x43200.bin.gz
+
+If you go checkout the program and build it:
+
+    git clone git://github.com/AlbertVeli/heightmap.git
+    cd heightmap
+    make
+
+The hm program will be built and the get_datafiles.sh script will be called
+automatically to download and unzip the files.
+
+
+**DEPENDENCIES**
+
+Ubuntu (apt-get install):
+
+ * build-essential
+ * libpng-dev
+ * libtiff-dev
+
+Gentoo (emerge -av):
+
+ * media-libs/libpng
+ * media-libs/tiff
+
+Macports (port install):
+
+ * libpng
+ * tiff
+
+MinGW:
+
+ * LibPng (gnuwin32.sourceforge.net)
+ * LibTiff (gnuwin32.sourceforge.net)
+
+You also need gunzip from the package gzip to unzip the srtm datafile. It is installed by default in all of the above.
 
 
 **USAGE**

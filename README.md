@@ -9,27 +9,26 @@ Before running the program the first time, the files:
 * srtm_ramp2.world.86400x43200.bin.gz
 * world.topo.bathy.200410.3x21600x10800.png
 
-needs to be downloaded into the datafiles/ directory.
-These files are part of the NASA Blue Marble Next Generation
-project and can be found at:
+needs to be downloaded into the
+[datafiles](https://github.com/AlbertVeli/heightmap/blob/master/datafiles/)
+directory. These files are part of the NASA Blue Marble Next Generation project
+and can be found at:
 
 Webpage: http://visibleearth.nasa.gov/view.php?id=73934  
 Mirror: ftp://neo.sci.gsfc.nasa.gov/bluemarble/bmng/
 
-The script [get_datafiles.sh](heightmap/blob/master/datafiles/get_datafiles.sh)
-automatically downloads these files. After download is finished, unpack the
-heightmap file with gunzip:
+The script
+[get_datafiles.sh](https://github.com/AlbertVeli/heightmap/blob/master/datafiles/get_datafiles.sh)
+automatically downloads these files and unpacks the gzipped srtm file.
 
-    gunzip srtm_ramp2.world.86400x43200.bin.gz
-
-If you go checkout the program and build it:
+Checkout the program and build it:
 
     git clone git://github.com/AlbertVeli/heightmap.git
     cd heightmap
     make
 
-The hm program will be built and the get_datafiles.sh script will be called
-automatically to download and unzip the files.
+The make command will build the hm program and run the get_datafiles.sh
+script to download the files and unzip the srtm file.
 
 
 **DEPENDENCIES**
@@ -50,17 +49,18 @@ Macports (port install):
  * libpng
  * tiff
 
-MinGW:
+MinGW (install manually from gnuwin32.sourceforge.net):
 
- * LibPng (gnuwin32.sourceforge.net)
- * LibTiff (gnuwin32.sourceforge.net)
+ * LibPng
+ * LibTiff
 
-You also need gunzip from the package gzip to unzip the srtm datafile. It is installed by default in all of the above.
+You also need gunzip from the package gzip to unzip the srtm datafile. It is
+installed by default in all of the above.
 
 
 **USAGE**
 
-    hm [OPTIONS] <latitude> <longitude> <latitude span> <longitude span> <basename>
+    hm [OPTIONS] <latitude> <longitude> <lat. span> <long. span> <basename>
 
 Use decimal fractions for latitude/longitude/spans.  
 
@@ -87,22 +87,30 @@ for the Scandinavia area (74° N, 3° E, span 19°, 27°), run:
 
 Use a map, terrestrial globe, google maps or other web service to figure
 out latitudes/longitudes. In google maps, zoom into an area and
-copy the URL (click on the share button). It should look something like:
+copy the URL (click on the share button). It could look something like:
 
-https://maps.google.com/?ll=59.611518,16.541634&spn=0.127302,0.42469
+https://maps.google.com/?ll=53.91081,-5.50415&spn=7.374845,13.557129
 
-Here the center is at *59.611518° N*, *16.541634°* E and the
-height/width span of the map in degrees are *0.127302°*, *0.42469°*.
+Here the center is at *53.91081° N*, *5.50415° W* and the
+height/width span of the map in degrees are *7.374845°*, *13.557129°*.
 To get to the upper left corner, move one half span in each direction.
 
 The arguments to cut out the corresponding area with this program:
 
-    59.611518 + 0.127302/2  ; up half height span
-    16.541634 - 0.42469/2   ; left half width span
-    0.127302                ; height span
-    0.42469                 ; width span
+    53.91081 + 7.374845/2  ; North (up) half height span
+    -5.50415 - 13.557129/2 ; West (left) half width span
+    7.374845               ; Height span
+    13.557129              ; Width span
 
-Remember that South and West are negative while North and East are positive degrees.
+If you calculate the coordinates the command line will be:
+
+    ./hm 57.5982325 -12.2827145 7.374845 13.557129 ireland
+
+Image rendered in Blender simulating a 40m sea level rise over Ireland
+using the exact command line shown above. See instruction video below
+for information on how to render the image in Blender.
+
+![ireland](https://raw.github.com/AlbertVeli/heightmap/gh-pages/images/ireland.png)
 
 
 **ELEVATION DATAFILE**

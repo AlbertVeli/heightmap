@@ -37,25 +37,62 @@ and one texture rgb png image. The wanted area is specified in latitudes/longitu
 
 <p><strong>PREPARATION</strong></p>
 
-<p>Before running the program the first time, download the files:</p>
+<p>Before running the program the first time, the files:</p>
 
 <ul>
 <li>srtm_ramp2.world.86400x43200.bin.gz</li>
 <li>world.topo.bathy.200410.3x21600x10800.png</li>
-</ul><p>from:</p>
+</ul><p>needs to be downloaded into the
+<a href="https://github.com/AlbertVeli/heightmap/blob/master/datafiles/">datafiles</a>
+directory. These files are part of the NASA Blue Marble Next Generation project
+and can be found at:</p>
 
 <p>Webpage: <a href="http://visibleearth.nasa.gov/view.php?id=73934">http://visibleearth.nasa.gov/view.php?id=73934</a><br>
 Mirror: <a>ftp://neo.sci.gsfc.nasa.gov/bluemarble/bmng/</a></p>
 
-<p>The script <a href="https://github.com/AlbertVeli/heightmap/blob/master/datafiles/get_datafiles.sh">get_datafiles.sh</a> automatically downloads these files. After download is finished, unpack the
-heightmap file with gunzip:</p>
+<p>The script
+<a href="https://github.com/AlbertVeli/heightmap/blob/master/datafiles/get_datafiles.sh">get_datafiles.sh</a>
+automatically downloads these files and unpacks the gzipped srtm file.</p>
 
-<pre><code>gunzip srtm_ramp2.world.86400x43200.bin.gz
+<p>Checkout the program and build it:</p>
+
+<pre><code>git clone git://github.com/AlbertVeli/heightmap.git
+cd heightmap
+make
 </code></pre>
+
+<p>The make command will build the hm program and run the get_datafiles.sh
+script to download the files and unzip the srtm file.</p>
+
+<p><strong>DEPENDENCIES</strong></p>
+
+<p>Ubuntu (apt-get install):</p>
+
+<ul>
+<li>build-essential</li>
+<li>libpng-dev</li>
+<li>libtiff-dev</li>
+</ul><p>Gentoo (emerge -av):</p>
+
+<ul>
+<li>media-libs/libpng</li>
+<li>media-libs/tiff</li>
+</ul><p>Macports (port install):</p>
+
+<ul>
+<li>libpng</li>
+<li>tiff</li>
+</ul><p>MinGW (install manually from gnuwin32.sourceforge.net):</p>
+
+<ul>
+<li>LibPng</li>
+<li>LibTiff</li>
+</ul><p>You also need gunzip from the package gzip to unzip the srtm datafile. It is
+installed by default in all of the above.</p>
 
 <p><strong>USAGE</strong></p>
 
-<pre><code>hm [OPTIONS] &lt;latitude&gt; &lt;longitude&gt; &lt;latitude span&gt; &lt;longitude span&gt; &lt;basename&gt;
+<pre><code>hm [OPTIONS] &lt;latitude&gt; &lt;longitude&gt; &lt;lat. span&gt; &lt;long. span&gt; &lt;basename&gt;
 </code></pre>
 
 <p>Use decimal fractions for latitude/longitude/spans.  </p>
@@ -81,23 +118,32 @@ for the Scandinavia area (74° N, 3° E, span 19°, 27°), run:</p>
 
 <p>Use a map, terrestrial globe, google maps or other web service to figure
 out latitudes/longitudes. In google maps, zoom into an area and
-copy the URL (click on the share button). It should look something like:</p>
+copy the URL (click on the share button). It could look something like:</p>
 
-<p><a href="https://maps.google.com/?ll=59.611518,16.541634&amp;spn=0.127302,0.42469">https://maps.google.com/?ll=59.611518,16.541634&amp;spn=0.127302,0.42469</a></p>
+<p><a href="https://maps.google.com/?ll=53.91081,-5.50415&amp;spn=7.374845,13.557129">https://maps.google.com/?ll=53.91081,-5.50415&amp;spn=7.374845,13.557129</a></p>
 
-<p>Here the center is at <em>59.611518° N</em>, <em>16.541634°</em> E and the
-height/width span of the map in degrees are <em>0.127302°</em>, <em>0.42469°</em>.
+<p>Here the center is at <em>53.91081° N</em>, <em>5.50415° W</em> and the
+height/width span of the map in degrees are <em>7.374845°</em>, <em>13.557129°</em>.
 To get to the upper left corner, move one half span in each direction.</p>
 
 <p>The arguments to cut out the corresponding area with this program:</p>
 
-<pre><code>59.611518 + 0.127302/2  ; up half height span
-16.541634 - 0.42469/2   ; left half width span
-0.127302                ; height span
-0.42469                 ; width span
+<pre><code>53.91081 + 7.374845/2  ; North (up) half height span
+-5.50415 - 13.557129/2 ; West (left) half width span
+7.374845               ; Height span
+13.557129              ; Width span
 </code></pre>
 
-<p>Remember that South and West are negative while North and East are positive degrees.</p>
+<p>If you calculate the coordinates the command line will be:</p>
+
+<pre><code>./hm 57.5982325 -12.2827145 7.374845 13.557129 ireland
+</code></pre>
+
+<p>Image rendered in Blender simulating a 40m sea level rise over Ireland
+using the exact command line shown above. See instruction video below
+for information on how to render the image in Blender.</p>
+
+<p><img src="https://github.com/AlbertVeli/heightmap/blob/gh-pages/images/ireland.png" alt="ireland"></p>
 
 <p><strong>ELEVATION DATAFILE</strong></p>
 

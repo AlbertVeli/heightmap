@@ -7,8 +7,10 @@
 #include <png.h>
 #include <arpa/inet.h> /* ntohs */
 
-bool save_heightmap_png(int x1, int x2, int y1, int y2, const char *outfile)
+bool save_heightmap_png(long double lat, long double lon, long double span_h, long double span_w, const char *outfile)
 {
+   int x1, x2, y1, y2;
+   bool ret = false;
    FILE *fp = NULL;
    png_structp png_ptr = NULL;
    png_infop info_ptr = NULL;
@@ -16,10 +18,15 @@ bool save_heightmap_png(int x1, int x2, int y1, int y2, const char *outfile)
    png_bytepp row_pointers;
    png_bytep row;
    int16_t elevation, height;
-   bool ret = false;
 
    /* Pointer to humongous (7GB) S_MAPW x S_MAPH 16-bit map data (see map.c) */
    int16_t *mapp = (int16_t *)map[0];
+
+   /* Map longitude/latidude to pixel coordinates in source image */
+   x1 = ((lon + 180.0) / (long double)360) * S_MAPW;
+   x2 = (((lon + span_w) + 180.0) / (long double)360) * S_MAPW - 1;
+   y1 = ((90 - lat) / (long double)180) * S_MAPH;
+   y2 = ((90 - (lat - span_h)) / (long double)180) * S_MAPH - 1;
 
    w = x2 - x1 + 1;
    h = y2 - y1 + 1;

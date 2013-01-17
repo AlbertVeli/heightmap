@@ -19,7 +19,6 @@
 
 int main(int argc, char **argv)
 {
-   int x1, x2, y1, y2;
    char heightfile[FNAMESIZE];
    char texturefile[FNAMESIZE];
 
@@ -44,13 +43,7 @@ int main(int argc, char **argv)
       return 1;
    }
 
-   /* Map longitude/latitude to pixel coordinates */
-   x1 = ((opt.longitude + 180.0) / (long double)360) * S_MAPW;
-   x2 = (((opt.longitude + opt.span_w) + 180.0) / (long double)360) * S_MAPW;
-   y1 = ((90 - opt.latitude) / (long double)180) * S_MAPH;
-   y2 = ((90 - (opt.latitude - opt.span_h)) / (long double)180) * S_MAPH;
-
-   save_heightmap_png(x1, x2, y1, y2, heightfile);
+   save_heightmap_png(opt.latitude, opt.longitude, opt.span_h, opt.span_w, heightfile);
 
    free_map(0);
 

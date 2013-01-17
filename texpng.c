@@ -1,6 +1,7 @@
 /* All Rights Reversed - No Rights Reserved */
 
 #include "map.h"
+#include "hmpng.h"
 
 #include <stdint.h>
 #include <string.h>
@@ -164,9 +165,9 @@ bool save_texture_png(long double lat, long double lon, long double span_h, long
 
    /* Map longitude/latidude to pixel coordinates in source image */
    x1 = ((lon + 180.0) / (long double)360) * width;
-   x2 = (((lon + span_w) + 180.0) / (long double)360) * width;
+   x2 = (((lon + span_w) + 180.0) / (long double)360) * width - 1;
    y1 = ((90 - lat) / (long double)180) * height;
-   y2 = ((90 - (lat - span_h)) / (long double)180) * height;
+   y2 = ((90 - (lat - span_h)) / (long double)180) * height - 1;
    dest_w = x2 - x1 + 1;
    dest_h = y2 - y1 + 1;
 

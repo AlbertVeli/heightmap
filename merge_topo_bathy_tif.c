@@ -24,12 +24,12 @@
 
 /* Reserve this many bytes for tif scanline */
 #define MAXSCANLINE 43200
-char scanline[MAXSCANLINE];
-TIFF *tif = NULL;
-uint32_t b_width, b_height;
+static char scanline[MAXSCANLINE];
+static TIFF *tif = NULL;
+static uint32_t b_width, b_height;
 
 
-int open_bathy_tiff(void)
+static int open_bathy_tiff(void)
 {
 #if 0
    uint32_t bps, spp;
@@ -83,14 +83,13 @@ bool ret = false;
    return ret;
 }
 
-
-void close_bathy_tiff(void)
+static void close_bathy_tiff(void)
 {
    /* close the TIFF file descriptor */
    TIFFClose(tif);
 }
 
-bool merge_topo_bathy(void)
+static bool merge_topo_bathy(void)
 {
    FILE *fp;
    int x, y;
